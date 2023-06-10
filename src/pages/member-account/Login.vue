@@ -1,22 +1,44 @@
 <script lang="ts">
-import { useQuasar } from 'quasar'
+import { useQuasar, Dialog } from 'quasar'
+import { LoginMemberUserInput } from 'src/common/model'
 import { useMemberUserStore } from 'src/stores/member-user-store'
-import { defineComponent, onMounted, ref } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   setup() {
     const $q = useQuasar()
+    const router = useRouter()
     const store = useMemberUserStore()
-    const { findAllMemberUser } = store
-
+    const { loginMemberUser, setToken } = store
+    const userId = ref<string>('')
+    const password = ref<string>('')
     const userList = ref()
 
-    onMounted(async () => {
-      userList.value = await findAllMemberUser()
-    })
+    const memberLogin = async () => {
+      try {
+        const loginMemberUserInput: LoginMemberUserInput = {
+          userId: userId.value,
+          password: password.value,
+        }
+        const token = await loginMemberUser({
+          loginMemberUserInput: loginMemberUserInput,
+        })
+        if (token?.error)
+          return $q.dialog({
+            title: '알림',
+            message: '아이디와 비밀번호를 확인해주세요.',
+            color: 'negative',
+          })
+        setToken(token?.data?.loginMemberUser)
+        router.replace({ name: 'Home' })
+      } catch (e) {
+        console.error(e)
+      }
+    }
 
-    const state = { userList }
-    const action = {}
+    const state = { userList, userId, password }
+    const action = { memberLogin }
     return {
       ...state,
       ...action,
@@ -24,7 +46,6 @@ export default defineComponent({
   },
 })
 </script>
-
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-orange text-white">
@@ -34,62 +55,119 @@ export default defineComponent({
             <img
               src="https://item.kakaocdn.net/do/6083fdfd2167d251eff093256f7ee68241d1a2caccd0c566eab28b91e2e5d306"
             /> </q-avatar
-          >둥둥이의 캘린더
+          >포트폴리오
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+    <div class="page">
+      <q-card class="login-form">
+        <q-card-section>
+          <h2 class="text-h6">Login</h2>
+        </q-card-section>
+        <q-card-section>
+          <q-form @submit="memberLogin">
+            <q-input
+              filled
+              v-model="userId"
+              label="Username"
+              type="text"
+            ></q-input>
+            <q-input
+              filled
+              v-model="password"
+              label="Password"
+              type="password"
+            ></q-input>
+            <q-card-actions align="right">
+              <q-btn color="primary" type="submit" label="Log in"></q-btn>
+            </q-card-actions>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </div>
+  </q-layout>
+</template>
+
+<!-- <template>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-orange text-white">
+      <q-toolbar>
+        <q-toolbar-title>
+          <q-avatar>
+            <img
+              src="https://item.kakaocdn.net/do/6083fdfd2167d251eff093256f7ee68241d1a2caccd0c566eab28b91e2e5d306"
+            /> </q-avatar
+          >포트폴리오
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
     <q-page-container>
       <q-page>
-        <q-card>
-          <q-card-section> 초코 - BackOffice </q-card-section>
-          <q-card-section>
-            <q-input
-              square
-              outlined
-              placeholder=""
-              class="text-input-area mx-0 w-100"
-              color="admin-gray1"
-            />
+        <from @submit="memberLogin">
+          <q-card>
+            <q-card-section> 로그인 </q-card-section>
+            <q-card-section>
+              <strong>아이디</strong>
+              <q-input
+                square
+                outlined
+                placeholder="아이디를 입력해주세요"
+                v-model="userId"
+              />
 
-            <strong class="admin-input-label">비밀번호</strong>
-            <q-input
-              square
-              outlined
-              type="password"
-              name="password"
-              placeholder=""
-              class="text-input-area mx-0 w-100"
-              color="admin-gray1"
-            />
+              <strong>비밀번호</strong>
+              <q-input
+                square
+                outlined
+                type="password"
+                placeholder="비밀번호를 입력해주세요."
+                v-model="password"
+              />
 
-            <q-btn
-              square
-              unelevated
-              class="admin-btn pink w-100"
-              label="로그인"
-              type="submit"
-            />
+              <q-btn
+                square
+                unelevated
+                class="admin-btn pink w-100"
+                label="로그인"
+                type="submit"
+              />
 
-            <q-separator />
-            <q-btn
-              square
-              unelevated
-              class="admin-btn text-pink w-50"
-              label="계정 신청"
-              style="border: solid 1px gainsboro"
-            /><q-btn
-              square
-              unelevated
-              class="admin-btn w-50 text-pink"
-              label="비밀번호 찾기"
-              style="border: solid 1px gainsboro"
-            />
-          </q-card-section>
-        </q-card>
+              <q-separator />
+              <q-btn
+                square
+                unelevated
+                class="admin-btn text-pink w-50"
+                label="계정 신청"
+                style="border: solid 1px gainsboro"
+              /><q-btn
+                square
+                unelevated
+                class="admin-btn w-50 text-pink"
+                label="비밀번호 찾기"
+                style="border: solid 1px gainsboro"
+              />
+            </q-card-section>
+          </q-card>
+        </from>
         <span class="copyright-text"
           >ⓒBU-LU-MAX N CO., LTD. ALL Right Reserved</span
         >
       </q-page>
     </q-page-container>
   </q-layout>
-</template>
+</template> -->
+
+<style scoped>
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  min-width: 800px;
+  min-height: 400px;
+  margin: 0 auto;
+}
+</style>

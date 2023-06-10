@@ -10,6 +10,11 @@ const routes: RouteRecordRaw[] = [
         path: 'user-manage',
         component: () => import('pages/member-user/UserManage.vue'),
       },
+      {
+        name: 'Home',
+        path: 'home',
+        component: () => import('pages/Home.vue'),
+      },
     ],
   },
   {

@@ -14,3 +14,9 @@ export const FIND_ALL_MEMBER_USER = gql`
     }
   }
 `
+
+export const LOGIN_MEMBER_USER = gql`
+  mutation ($loginMemberUserInput: LoginMemberUserInput!) {
+    loginMemberUser(loginMemberUserInput: $loginMemberUserInput)
+  }
+`

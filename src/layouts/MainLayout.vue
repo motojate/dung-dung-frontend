@@ -20,12 +20,6 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-list>
         <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
       </q-list>
     </q-drawer>
 
@@ -36,8 +30,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import EssentialLink from 'components/EssentialLink.vue';
+import { defineComponent, ref } from 'vue'
 
 const linksList = [
   {
@@ -82,25 +75,21 @@ const linksList = [
     icon: 'favorite',
     link: 'https://awesome.quasar.dev',
   },
-];
+]
 
 export default defineComponent({
   name: 'MainLayout',
 
-  components: {
-    EssentialLink,
-  },
-
   setup() {
-    const leftDrawerOpen = ref(false);
+    const leftDrawerOpen = ref(false)
 
     return {
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
+        leftDrawerOpen.value = !leftDrawerOpen.value
       },
-    };
+    }
   },
-});
+})
 </script>
