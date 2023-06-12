@@ -1,7 +1,40 @@
+<script lang="ts">
+import router from 'src/router'
+import { useMemberUserStore } from 'src/stores/member-user-store'
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+export default defineComponent({
+  name: 'MainLayout',
+
+  setup() {
+    const router = useRouter()
+    const store = useMemberUserStore()
+    const { resetToken } = store
+    const leftDrawerOpen = ref(false)
+    const logout = () => {
+      resetToken()
+      router.replace({ name: 'Login' })
+    }
+
+    const toggleLeftDrawer = () => {
+      leftDrawerOpen.value = !leftDrawerOpen.value
+    }
+
+    const state = { leftDrawerOpen }
+    const action = { logout, toggleLeftDrawer }
+    return {
+      ...state,
+      ...action,
+    }
+  },
+})
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-orange text-white">
         <q-btn
           flat
           dense
@@ -11,9 +44,11 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
+        <q-toolbar-title> 포트폴리오 </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>
+          <q-btn flat label="로그아웃" @click="logout"></q-btn>
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -28,68 +63,3 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
-
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev',
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework',
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev',
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev',
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev',
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev',
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev',
-  },
-]
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  setup() {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      },
-    }
-  },
-})
-</script>

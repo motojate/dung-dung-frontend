@@ -1,11 +1,13 @@
 <script lang="ts">
-import { useQuasar, Dialog } from 'quasar'
+import { useQuasar } from 'quasar'
 import { LoginMemberUserInput } from 'src/common/model'
 import { useMemberUserStore } from 'src/stores/member-user-store'
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import SignUp from 'src/components/member-account/SignUp.vue'
 
 export default defineComponent({
+  components: { SignUp },
   setup() {
     const $q = useQuasar()
     const router = useRouter()
@@ -13,7 +15,8 @@ export default defineComponent({
     const { loginMemberUser, setToken } = store
     const userId = ref<string>('')
     const password = ref<string>('')
-    const userList = ref()
+
+    const viewSignUpDialog = ref<boolean>(false)
 
     const memberLogin = async () => {
       try {
@@ -37,8 +40,12 @@ export default defineComponent({
       }
     }
 
-    const state = { userList, userId, password }
-    const action = { memberLogin }
+    const openSignUpDialog = () => {
+      viewSignUpDialog.value = true
+    }
+
+    const state = { userId, password, viewSignUpDialog }
+    const action = { memberLogin, openSignUpDialog }
     return {
       ...state,
       ...action,
@@ -59,30 +66,64 @@ export default defineComponent({
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
-    <div class="page">
-      <q-card class="login-form">
+
+    <div class="q-pa-md q-gutter-md d-flex justify-center align-center vh-100">
+      <q-card class="card-container">
         <q-card-section>
           <h2 class="text-h6">Login</h2>
         </q-card-section>
-        <q-card-section>
-          <q-form @submit="memberLogin">
+
+        <q-form @submit="memberLogin">
+          <q-card-section>
             <q-input
-              filled
+              rounded
+              outlined
               v-model="userId"
-              label="Username"
+              label="아이디"
               type="text"
-            ></q-input>
+            />
+          </q-card-section>
+          <q-card-section>
             <q-input
-              filled
+              rounded
+              outlined
               v-model="password"
-              label="Password"
+              label="비밀번호"
               type="password"
-            ></q-input>
-            <q-card-actions align="right">
-              <q-btn color="primary" type="submit" label="Log in"></q-btn>
-            </q-card-actions>
-          </q-form>
-        </q-card-section>
+            />
+          </q-card-section>
+
+          <q-card-section>
+            <q-btn
+              rounded
+              outline
+              class="w-100"
+              color="primary"
+              type="submit"
+              label="로그인"
+            />
+          </q-card-section>
+          <q-card-section> <q-separator inset /> </q-card-section>
+          <q-card-actions>
+            <div class="w-100">
+              <q-btn flat class="w-50" color="orange" label="비밀번호 찾기" />
+              <q-btn
+                flat
+                class="w-50"
+                color="orange"
+                @click="openSignUpDialog"
+                label="회원 가입"
+              />
+              <q-dialog persistent v-model="viewSignUpDialog">
+                <sign-up
+              /></q-dialog>
+            </div>
+          </q-card-actions>
+
+          <!-- <q-card-section>
+              <q-btn rounded outline color="primary" label="회원가입" />
+            </q-card-section> -->
+        </q-form>
       </q-card>
     </div>
   </q-layout>
@@ -158,16 +199,24 @@ export default defineComponent({
 </template> -->
 
 <style scoped>
-.page {
+.d-flex {
   display: flex;
+}
+
+.justify-center {
   justify-content: center;
+}
+
+.align-center {
   align-items: center;
+}
+
+.vh-100 {
   height: 100vh;
 }
 
-.login-form {
-  min-width: 800px;
-  min-height: 400px;
-  margin: 0 auto;
+.card-container {
+  min-width: 600px;
+  margin: auto;
 }
 </style>
