@@ -1,7 +1,14 @@
 import { storeToRefs } from 'pinia'
 import { useMemberUserStore } from 'src/stores/member-user-store'
 
-export const authPlugin = ({ opContext }: any) => {
+interface OperationContext {
+  opContext: {
+    headers: {
+      Authorization?: string
+    }
+  }
+}
+export const authPlugin = ({ opContext }: OperationContext) => {
   const memberUserStore = useMemberUserStore()
   const { token } = storeToRefs(memberUserStore)
   if (token.value) {
