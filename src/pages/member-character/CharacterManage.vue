@@ -1,22 +1,18 @@
 <script lang="ts">
+import { storeToRefs } from 'pinia'
 import { useQuasar } from 'quasar'
-import { useMemberUserStore } from 'src/stores/member-user-store'
+import { useMemberCharacterStore } from 'src/stores/member-character.store'
 import { defineComponent, onMounted, ref } from 'vue'
 
 export default defineComponent({
   setup() {
     const $q = useQuasar()
-    const store = useMemberUserStore()
-    const { findAllMemberUser } = store
+    const store = useMemberCharacterStore()
+    const { selectCharacter } = store
+    const { result } = storeToRefs(store)
 
-    const userList = ref()
-
-    onMounted(async () => {
-      userList.value = await findAllMemberUser()
-    })
-
-    const state = { userList }
-    const action = {}
+    const state = { result }
+    const action = { selectCharacter }
     return {
       ...state,
       ...action,
@@ -26,5 +22,6 @@ export default defineComponent({
 </script>
 
 <template>
-  {{ userList }}
+  결과: {{ result }} <q-separator />
+  <q-btn @click="selectCharacter" rounded flat label="뽑기" />
 </template>

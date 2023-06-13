@@ -1,11 +1,14 @@
 import gql from 'graphql-tag'
 
-export const FIND_ALL_MEMBER_USER = gql`
+export const SELECT_CHARACTER = gql`
   query selectCharacter {
     selectCharacter {
       name
       grade
       season
+      users {
+        userId
+      }
     }
   }
 `

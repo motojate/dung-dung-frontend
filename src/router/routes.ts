@@ -15,6 +15,11 @@ const routes: RouteRecordRaw[] = [
         path: 'home',
         component: () => import('pages/Home.vue'),
       },
+      {
+        name: 'CharacterManage',
+        path: 'character-manage',
+        component: () => import('pages/member-character/CharacterManage.vue'),
+      },
     ],
   },
   {
