@@ -1,35 +1,12 @@
-// import { useUserStore } from '../stores/user'
-// import { createClient, onBeforeRetry, ClientPlugin } from 'villus'
+import { storeToRefs } from 'pinia'
+import { useMemberUserStore } from 'src/stores/member-user-store'
 
-// export const useInterceptor = () => {
-//   const userStore = useUserStore()
+export const authPlugin = ({ opContext }: any) => {
+  const memberUserStore = useMemberUserStore()
+  const { token } = storeToRefs(memberUserStore)
+  if (token.value) {
+    opContext.headers.Authorization = `Bearer ${token.value}`
+  } else return
 
-//   const client = createClient({
-//     url: 'YOUR_GRAPHQL_ENDPOINT',
-//     headers: () => {
-//       const token = userStore.getToken()
-//       if (token) {
-//         return {
-//           Authorization: `Bearer ${token}`,
-//         }
-//       }
-//       return {}
-//     },
-//   })
-
-//   const defaultVillusPlugin: ClientPlugin[] = []
-
-//   client.use([
-//     beforeRetry(({ context }) => {
-//       const token = userStore.getToken()
-//       if (token) {
-//         context.headers = {
-//           ...context.headers,
-//           Authorization: `Bearer ${token}`,
-//         }
-//       }
-//     }),
-//   ])
-
-//   return { client, defaultVillusPlugin }
-// }
+  console.log(opContext)
+}

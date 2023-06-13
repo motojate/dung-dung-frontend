@@ -1,10 +1,12 @@
 import { boot } from 'quasar/wrappers'
-import { useClient, fetch } from 'villus'
+import { defaultPlugins, useClient } from 'villus'
+import { authPlugin } from 'src/composables/interceptor'
 
 export default boot(({ app }) => {
   const client = useClient({
     url: '/api/graphql',
-    use: [],
+    use: [authPlugin, ...defaultPlugins()],
   })
+  console.log(client)
   app.use(client)
 })
