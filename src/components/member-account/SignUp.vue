@@ -1,17 +1,17 @@
 <script lang="ts">
 import { useQuasar } from 'quasar'
 import { SignUpMemberUserInput } from 'src/common/model'
-import { useMemberUserStore } from 'src/stores/member-user-store'
+import { useAuthStore } from 'src/stores/auth-store'
 import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   setup() {
     const $q = useQuasar()
-    const store = useMemberUserStore()
+    const store = useAuthStore()
     const { signUpMemberUser } = store
     const userId = ref<string>('')
     const password = ref<string>('')
-    const userList = ref()
+    const userList = ref<any>()
 
     const memberSingUp = async () => {
       try {

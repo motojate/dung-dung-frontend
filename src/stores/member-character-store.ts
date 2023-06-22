@@ -1,20 +1,17 @@
 import { defineStore } from 'pinia'
 import { SELECT_CHARACTER } from 'src/graphql/character'
 import { useQuery } from 'villus'
-import { ref } from 'vue'
 
 export const useMemberCharacterStore = defineStore('member-character', () => {
-  const result = ref()
-
-  const selectCharacter = async () => {
+  const selectCharacter = async (): Promise<string> => {
     const { data } = await useQuery({
       query: SELECT_CHARACTER,
       cachePolicy: 'network-only',
     })
-    result.value = data?.value?.selectCharacter
+    return data?.value?.selectCharacter
   }
 
-  const state = { result }
+  const state = {}
   const action = {
     selectCharacter,
   }
