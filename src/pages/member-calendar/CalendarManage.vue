@@ -5,6 +5,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   components: {
@@ -13,6 +14,7 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false)
     const rightDrawerOpen = ref(false)
+    const $q = useQuasar()
 
     const currentEvents = ref([])
     const calendarOptions = ref({
@@ -47,7 +49,11 @@ export default defineComponent({
     }
 
     function handleDateSelect(selectInfo: any) {
-      let title = prompt('Please enter a new title for your event')
+      $q.dialog({
+        title: '알림',
+        message: '추가하시겠습니까?',
+      })
+      let title = 'test'
       let calendarApi = selectInfo.view.calendar
 
       calendarApi.unselect() // clear date selection
