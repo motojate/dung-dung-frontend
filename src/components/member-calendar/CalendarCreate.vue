@@ -12,7 +12,7 @@ export default defineComponent({
     const userId = ref<string>('')
     const password = ref<string>('')
 
-    const state = { userList, userId, password }
+    const state = { userId, password }
     const action = {}
     return {
       ...state,

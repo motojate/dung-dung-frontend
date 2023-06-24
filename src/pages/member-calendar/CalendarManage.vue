@@ -1,88 +1,71 @@
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
-import FullCalendar from '@fullcalendar/vue3'
-import CalendarCreate from 'src/components/member-calendar/CalendarCreate.vue'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
 import { useQuasar } from 'quasar'
+import { ref, computed } from 'vue'
+import CalendarCreate from 'src/components/member-calendar/CalendarCreate.vue'
 
-export default defineComponent({
+export default {
   components: {
-    FullCalendar,
     CalendarCreate,
   },
+
   setup() {
+    const currentDate = ref(new Date())
     const leftDrawerOpen = ref<boolean>(false)
     const rightDrawerOpen = ref<boolean>(false)
     const $q = useQuasar()
     const viewCreateDialog = ref<boolean>(false)
-    const currentEvents = ref([])
-    const calendarOptions = ref({
-      plugins: [
-        dayGridPlugin,
-        timeGridPlugin,
-        interactionPlugin, // needed for dateClick
-      ],
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay',
-      },
-      initialView: 'dayGridMonth',
-      initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-      editable: true,
-      selectable: true,
-      selectMirror: true,
-      dayMaxEvents: true,
-      weekends: true,
-      select: handleDateSelect,
-      eventClick: handleEventClick,
-      eventsSet: handleEvents,
-      /* you can update a remote database when these fire:
-      eventAdd:
-      eventChange:
-      eventRemove:
-      */
+    const currentMonth = computed(() => {
+      const options: any = {
+        month: 'long',
+        year: 'numeric',
+      }
+      return currentDate.value.toLocaleDateString(undefined, options)
     })
-    function handleWeekendsToggle() {
-      calendarOptions.value.weekends = !calendarOptions.value.weekends // update a property
-    }
 
-    function handleDateSelect(selectInfo: any) {
-      console.log(1)
-      viewCreateDialog.value = true
-      let title = 'test'
-      let calendarApi = selectInfo.view.calendar
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-      calendarApi.unselect() // clear date selection
+    const calendarDates = computed(() => {
+      const year = currentDate.value.getFullYear()
+      const month = currentDate.value.getMonth()
+      const firstDay = new Date(year, month, 1)
+      const lastDay = new Date(year, month + 1, 0)
+      const dates = []
 
-      if (title) {
-        calendarApi.addEvent({
-          id: createEventId(),
-          title,
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-        })
+      for (let date = 1; date <= lastDay.getDate(); date++) {
+        dates.push(date)
       }
-    }
 
-    function handleEventClick(clickInfo: any) {
-      if (
-        confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`
-        )
-      ) {
-        clickInfo.event.remove()
+      const startOffset = firstDay.getDay()
+
+      for (let i = 0; i < startOffset; i++) {
+        dates.unshift('')
       }
+
+      return dates
+    })
+
+    function previousMonth() {
+      currentDate.value = new Date(
+        currentDate.value.getFullYear(),
+        currentDate.value.getMonth() - 1
+      )
     }
 
-    function handleEvents(events: any) {
-      currentEvents.value = events
+    function nextMonth() {
+      currentDate.value = new Date(
+        currentDate.value.getFullYear(),
+        currentDate.value.getMonth() + 1
+      )
     }
 
+    function isToday(date: any) {
+      const today = new Date()
+      return (
+        date === today.getDate() &&
+        currentDate.value.getMonth() === today.getMonth() &&
+        currentDate.value.getFullYear() === today.getFullYear()
+      )
+    }
     const toggleLeftDrawer = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value
     }
@@ -92,30 +75,31 @@ export default defineComponent({
     }
 
     const state = {
+      currentMonth,
+      days,
+      calendarDates,
       leftDrawerOpen,
       rightDrawerOpen,
-      calendarOptions,
-      currentEvents,
       viewCreateDialog,
     }
     const action = {
+      previousMonth,
+      nextMonth,
+      isToday,
       toggleLeftDrawer,
       toggleRightDrawer,
-      handleWeekendsToggle,
-      handleDateSelect,
-      handleEventClick,
-      handleEvents,
     }
+
     return {
       ...state,
       ...action,
     }
   },
-})
+}
 </script>
 
 <template>
-  <q-layout view="hHr LpR fFf">
+  <q-layout view="hHr lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
@@ -147,12 +131,37 @@ export default defineComponent({
 
     <q-page-container>
       <q-btn @click="viewCreateDialog = true"></q-btn>
-      <FullCalendar :options="calendarOptions">
-        <template v-slot:eventContent="arg">
-          <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
-        </template>
-      </FullCalendar>
+
+      <div class="q-pa-lg">
+        <div class="q-gutter-md">
+          <div class="calendar q-pa-md">
+            <div class="header">
+              <q-icon
+                name="arrow_back"
+                class="q-mr-sm"
+                @click="previousMonth"
+              />
+              <h2 class="q-my-none">{{ currentMonth }}</h2>
+              <q-icon name="arrow_forward" class="q-ml-sm" @click="nextMonth" />
+            </div>
+            <div class="days">
+              <div class="day" v-for="(day, index) in days" :key="index">
+                {{ day }}
+              </div>
+            </div>
+            <div class="dates">
+              <div
+                v-for="(date, index) in calendarDates"
+                :key="index"
+                class="date"
+                :class="{ today: isToday(date) }"
+              >
+                {{ date }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <q-dialog persistent v-model="viewCreateDialog">
         <calendar-create
@@ -160,3 +169,58 @@ export default defineComponent({
     </q-page-container>
   </q-layout>
 </template>
+
+<style scoped>
+.calendar {
+  width: 1600px;
+  max-width: 100%;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #e0e0e0;
+  padding: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.days {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.day {
+  text-align: center;
+  font-weight: bold;
+  color: #888;
+  padding: 10px;
+  flex: 1;
+}
+
+.dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+
+.date {
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.today {
+  background-color: #ff4081;
+  color: #fff;
+}
+</style>
