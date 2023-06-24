@@ -11,26 +11,9 @@ export default defineComponent({
     const { signUpMemberUser } = store
     const userId = ref<string>('')
     const password = ref<string>('')
-    const userList = ref<any>()
-
-    const memberSingUp = async () => {
-      try {
-        const signUpMemberUserInput: SignUpMemberUserInput = {
-          userId: userId.value,
-          password: password.value,
-        }
-        const { data, error } = await signUpMemberUser({
-          signUpMemberUserInput: signUpMemberUserInput,
-        })
-        if (error) {
-        } else return $q
-      } catch (e) {
-        console.error(e)
-      }
-    }
 
     const state = { userList, userId, password }
-    const action = { memberSingUp }
+    const action = {}
     return {
       ...state,
       ...action,
