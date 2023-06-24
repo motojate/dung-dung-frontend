@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
 import FullCalendar from '@fullcalendar/vue3'
+import CalendarCreate from 'src/components/member-calendar/CalendarCreate.vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -10,12 +11,13 @@ import { useQuasar } from 'quasar'
 export default defineComponent({
   components: {
     FullCalendar,
+    CalendarCreate,
   },
   setup() {
-    const leftDrawerOpen = ref(false)
-    const rightDrawerOpen = ref(false)
+    const leftDrawerOpen = ref<boolean>(false)
+    const rightDrawerOpen = ref<boolean>(false)
     const $q = useQuasar()
-
+    const viewCreateDialog = ref<boolean>(false)
     const currentEvents = ref([])
     const calendarOptions = ref({
       plugins: [
@@ -49,10 +51,8 @@ export default defineComponent({
     }
 
     function handleDateSelect(selectInfo: any) {
-      $q.dialog({
-        title: '알림',
-        message: '추가하시겠습니까?',
-      })
+      console.log(1)
+      viewCreateDialog.value = true
       let title = 'test'
       let calendarApi = selectInfo.view.calendar
 
@@ -96,6 +96,7 @@ export default defineComponent({
       rightDrawerOpen,
       calendarOptions,
       currentEvents,
+      viewCreateDialog,
     }
     const action = {
       toggleLeftDrawer,
@@ -145,12 +146,17 @@ export default defineComponent({
     </q-drawer>
 
     <q-page-container>
+      <q-btn @click="viewCreateDialog = true"></q-btn>
       <FullCalendar :options="calendarOptions">
         <template v-slot:eventContent="arg">
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
         </template>
       </FullCalendar>
+
+      <q-dialog persistent v-model="viewCreateDialog">
+        <calendar-create
+      /></q-dialog>
     </q-page-container>
   </q-layout>
 </template>
