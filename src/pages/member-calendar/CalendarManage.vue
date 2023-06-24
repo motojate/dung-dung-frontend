@@ -12,6 +12,7 @@ export default {
     const currentDate = ref(new Date())
     const leftDrawerOpen = ref<boolean>(false)
     const rightDrawerOpen = ref<boolean>(false)
+    const miniState = ref(false)
     const $q = useQuasar()
     const viewCreateDialog = ref<boolean>(false)
     const currentMonth = computed(() => {
@@ -74,6 +75,19 @@ export default {
       rightDrawerOpen.value = !rightDrawerOpen.value
     }
 
+    const drawerClick = (e: any) => {
+      // if in "mini" state and user
+      // click on drawer, we switch it to "normal" mode
+      if (miniState.value) {
+        miniState.value = false
+
+        // notice we have registered an event with capture flag;
+        // we need to stop further propagation as this click is
+        // intended for switching drawer to "normal" mode only
+        e.stopPropagation()
+      }
+    }
+
     const state = {
       currentMonth,
       days,
@@ -81,6 +95,7 @@ export default {
       leftDrawerOpen,
       rightDrawerOpen,
       viewCreateDialog,
+      miniState,
     }
     const action = {
       previousMonth,
@@ -88,6 +103,7 @@ export default {
       isToday,
       toggleLeftDrawer,
       toggleRightDrawer,
+      drawerClick,
     }
 
     return {
@@ -108,7 +124,7 @@ export default {
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
           </q-avatar>
-          Title
+          둥둥이의 캘린더
         </q-toolbar-title>
 
         <q-btn dense flat round icon="menu" @click="toggleRightDrawer" />
@@ -121,8 +137,68 @@ export default {
       </q-tabs>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" bordered>
-      <!-- drawer content -->
+    <q-drawer
+      v-model="leftDrawerOpen"
+      show-if-above
+      :mini="!leftDrawerOpen || miniState"
+      @click.capture="drawerClick"
+      :width="200"
+      :breakpoint="500"
+      bordered
+      :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
+      side="left"
+    >
+      <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+        <q-list padding>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="inbox" />
+            </q-item-section>
+
+            <q-item-section> Inbox </q-item-section>
+          </q-item>
+
+          <q-item active clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="star" />
+            </q-item-section>
+
+            <q-item-section> Star </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="send" />
+            </q-item-section>
+
+            <q-item-section> Send </q-item-section>
+          </q-item>
+
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="drafts" />
+            </q-item-section>
+
+            <q-item-section> Drafts </q-item-section>
+          </q-item>
+        </q-list>
+      </q-scroll-area>
+
+      <!--
+          in this case, we use a button (can be anything)
+          so that user can switch back
+          to mini-mode
+        -->
+      <div class="q-mini-drawer-hide absolute" style="top: 15px; right: -17px">
+        <q-btn
+          dense
+          round
+          unelevated
+          color="accent"
+          icon="chevron_left"
+          @click="miniState = true"
+        />
+      </div>
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
