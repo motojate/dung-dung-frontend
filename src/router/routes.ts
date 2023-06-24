@@ -23,6 +23,12 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    name: 'CalendarManage',
+    path: '/calendar-manage',
+    component: () => import('pages/member-calendar/CalendarManage.vue'),
+  },
+
+  {
     name: 'Login',
     path: '/login',
     component: () => import('pages/member-account/Login.vue'),
