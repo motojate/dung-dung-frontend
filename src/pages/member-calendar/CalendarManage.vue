@@ -139,14 +139,12 @@ export default defineComponent({
     </q-drawer>
 
     <q-page-container>
-      <div class="demo-app-main">
-        <FullCalendar class="demo-app-calendar" :options="calendarOptions">
-          <template v-slot:eventContent="arg">
-            <b>{{ arg.timeText }}</b>
-            <i>{{ arg.event.title }}</i>
-          </template>
-        </FullCalendar>
-      </div>
+      <FullCalendar :options="calendarOptions">
+        <template v-slot:eventContent="arg">
+          <b>{{ arg.timeText }}</b>
+          <i>{{ arg.event.title }}</i>
+        </template>
+      </FullCalendar>
     </q-page-container>
   </q-layout>
 </template>
