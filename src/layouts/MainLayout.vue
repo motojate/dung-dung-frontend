@@ -1,5 +1,4 @@
 <script lang="ts">
-import router from 'src/router'
 import { useMemberUserStore } from 'src/stores/member-user-store'
 import { defineComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'

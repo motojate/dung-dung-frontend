@@ -9,10 +9,11 @@ export default {
   },
 
   setup() {
-    const currentDate = ref(new Date())
-    const leftDrawerOpen = ref<boolean>(false)
+    const currentDate = ref<Date>(new Date())
     const rightDrawerOpen = ref<boolean>(false)
-    const miniState = ref(false)
+    const miniState = ref<boolean>(true)
+    const leftDrawerOpen = ref<boolean>(false)
+    const expanded = ref<boolean>(false)
     const $q = useQuasar()
     const viewCreateDialog = ref<boolean>(false)
     const currentMonth = computed(() => {
@@ -67,9 +68,6 @@ export default {
         currentDate.value.getFullYear() === today.getFullYear()
       )
     }
-    const toggleLeftDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value
-    }
 
     const toggleRightDrawer = () => {
       rightDrawerOpen.value = !rightDrawerOpen.value
@@ -96,12 +94,13 @@ export default {
       rightDrawerOpen,
       viewCreateDialog,
       miniState,
+      expanded,
     }
     const action = {
       previousMonth,
       nextMonth,
       isToday,
-      toggleLeftDrawer,
+
       toggleRightDrawer,
       drawerClick,
     }
@@ -118,8 +117,6 @@ export default {
   <q-layout view="hHr lpR fFf">
     <q-header elevated class="bg-primary text-white" height-hint="98">
       <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-
         <q-toolbar-title>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
@@ -140,46 +137,40 @@ export default {
     <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
-      :mini="!leftDrawerOpen || miniState"
+      :mini="miniState"
       @click.capture="drawerClick"
-      :width="200"
+      :width="400"
       :breakpoint="500"
       bordered
       :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'"
       side="left"
     >
-      <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: 0 }">
+      <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: '0' }">
         <q-list padding>
           <q-item clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="inbox" />
             </q-item-section>
 
-            <q-item-section> Inbox </q-item-section>
+            <q-item-section @click="expanded = !expanded">
+              보유 일정
+            </q-item-section>
           </q-item>
+          <q-card flat bordered>
+            <q-slide-transition>
+              <div v-show="expanded">
+                <q-separator />
+                <q-card-section class="text-subitle2"> ddd </q-card-section>
+              </div>
+            </q-slide-transition>
+          </q-card>
 
           <q-item active clickable v-ripple>
             <q-item-section avatar>
               <q-icon name="star" />
             </q-item-section>
 
-            <q-item-section> Star </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="send" />
-            </q-item-section>
-
-            <q-item-section> Send </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="drafts" />
-            </q-item-section>
-
-            <q-item-section> Drafts </q-item-section>
+            <q-item-section> 중요 일정함 </q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
