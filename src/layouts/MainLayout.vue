@@ -16,12 +16,30 @@ export default defineComponent({
       router.replace({ name: 'Login' })
     }
 
+    const goCharacterManage = () => {
+      router.replace({ name: 'CharacterManage' })
+    }
+
+    const goCalendarManage = () => {
+      router.replace({ name: 'CalendarManage' })
+    }
+
     const toggleLeftDrawer = () => {
       leftDrawerOpen.value = !leftDrawerOpen.value
     }
 
+    const test = () => {
+      console.log(1)
+    }
+
     const state = { leftDrawerOpen }
-    const action = { logout, toggleLeftDrawer }
+    const action = {
+      logout,
+      toggleLeftDrawer,
+      goCharacterManage,
+      goCalendarManage,
+      test,
+    }
     return {
       ...state,
       ...action,
@@ -51,9 +69,25 @@ export default defineComponent({
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="bg-grey-4">
       <q-list>
-        <q-item-label header> Essential Links </q-item-label>
+        <q-item-label header> 메뉴 </q-item-label>
+        <q-separator />
+        <q-item clickable v-ripple @click="goCharacterManage">
+          <q-item-section avatar>
+            <q-icon name="monetization_on" />
+          </q-item-section>
+          <q-item-section>도박하러 가기</q-item-section>
+          <q-item-section side>Side</q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item clickable v-ripple @click="goCalendarManage">
+          <q-item-section avatar>
+            <q-icon name="calendar_month" />
+          </q-item-section>
+          <q-item-section>내 일정 보기</q-item-section>
+          <q-item-section side>Side</q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
