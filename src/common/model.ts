@@ -6,3 +6,9 @@ export interface SignUpMemberUserInput {
   userId: string
   password: string
 }
+
+export interface CalendarCardItem {
+  index: number
+  name: string
+  icon: string
+}

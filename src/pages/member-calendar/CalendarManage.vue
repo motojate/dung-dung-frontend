@@ -2,6 +2,7 @@
 import { useQuasar } from 'quasar'
 import { ref, computed } from 'vue'
 import CalendarCreate from 'src/components/member-calendar/CalendarCreate.vue'
+import { CALENDAR_CARD_ITEM_LIST } from 'src/common/constants'
 
 export default {
   components: {
@@ -14,6 +15,7 @@ export default {
     const miniState = ref<boolean>(true)
     const leftDrawerOpen = ref<boolean>(false)
     const expanded = ref<boolean>(false)
+    const selectedItem = ref<number>(0)
     const $q = useQuasar()
     const viewCreateDialog = ref<boolean>(false)
     const currentMonth = computed(() => {
@@ -86,6 +88,15 @@ export default {
       }
     }
 
+    const viewDateCalendar = (
+      year: string,
+      month: string | number,
+      day: string | number
+    ) => {
+      console.log(year, month, day)
+      return
+    }
+
     const state = {
       currentMonth,
       days,
@@ -95,6 +106,8 @@ export default {
       viewCreateDialog,
       miniState,
       expanded,
+      CALENDAR_CARD_ITEM_LIST,
+      selectedItem,
     }
     const action = {
       previousMonth,
@@ -103,6 +116,7 @@ export default {
 
       toggleRightDrawer,
       drawerClick,
+      viewDateCalendar,
     }
 
     return {
@@ -147,30 +161,21 @@ export default {
     >
       <q-scroll-area class="fit" :horizontal-thumb-style="{ opacity: '0' }">
         <q-list padding>
-          <q-item clickable v-ripple>
+          <q-item
+            v-for="item in CALENDAR_CARD_ITEM_LIST"
+            :key="item.index"
+            clickable
+            v-ripple
+            :active="selectedItem === item.index"
+            @click="selectedItem = item.index"
+          >
             <q-item-section avatar>
-              <q-icon name="inbox" />
+              <q-icon :name="item.icon" />
             </q-item-section>
 
             <q-item-section @click="expanded = !expanded">
-              보유 일정
+              {{ item.name }}
             </q-item-section>
-          </q-item>
-          <q-card flat bordered>
-            <q-slide-transition>
-              <div v-show="expanded">
-                <q-separator />
-                <q-card-section class="text-subitle2"> ddd </q-card-section>
-              </div>
-            </q-slide-transition>
-          </q-card>
-
-          <q-item active clickable v-ripple>
-            <q-item-section avatar>
-              <q-icon name="star" />
-            </q-item-section>
-
-            <q-item-section> 중요 일정함 </q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -223,7 +228,9 @@ export default {
                 class="date"
                 :class="{ today: isToday(date) }"
               >
-                {{ date }}
+                <div @click="viewDateCalendar(currentMonth, date, date)">
+                  {{ date }}
+                </div>
               </div>
             </div>
           </div>
