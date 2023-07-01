@@ -89,7 +89,6 @@ export default {
     }
 
     const viewDateCalendar = (month: string, day: string | number) => {
-      console.log(month, day)
       return
     }
 
