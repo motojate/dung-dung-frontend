@@ -88,12 +88,8 @@ export default {
       }
     }
 
-    const viewDateCalendar = (
-      year: string,
-      month: string | number,
-      day: string | number
-    ) => {
-      console.log(year, month, day)
+    const viewDateCalendar = (month: string, day: string | number) => {
+      console.log(month, day)
       return
     }
 
@@ -228,7 +224,7 @@ export default {
                 class="date"
                 :class="{ today: isToday(date) }"
               >
-                <div @click="viewDateCalendar(currentMonth, date, date)">
+                <div @click="viewDateCalendar(currentMonth, date)">
                   {{ date }}
                 </div>
               </div>
