@@ -14,12 +14,12 @@ export const useMemberScheduleStore = defineStore('member-schedule', () => {
       },
       cachePolicy: 'network-only',
     })
-    memberUserSchedule.value = data?.value?.selectCharacter
+    memberUserSchedule.value = data?.value?.findByScheduleFromUserAndMonth
   }
 
-  const state = { result }
+  const state = { memberUserSchedule }
   const action = {
-    selectCharacter,
+    findScheduleFromUserAndMonth,
   }
 
   return { ...state, ...action }

@@ -1,8 +1,10 @@
 <script lang="ts">
 import { useQuasar } from 'quasar'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import CalendarCreate from 'src/components/member-calendar/CalendarCreate.vue'
 import { CALENDAR_CARD_ITEM_LIST } from 'src/common/constants'
+import { useMemberScheduleStore } from 'src/stores/member-schedule-store'
+import { storeToRefs } from 'pinia'
 
 export default {
   components: {
@@ -10,6 +12,9 @@ export default {
   },
 
   setup() {
+    const scheduleStore = useMemberScheduleStore()
+    const { memberUserSchedule } = storeToRefs(scheduleStore)
+    const { findScheduleFromUserAndMonth } = scheduleStore
     const currentDate = ref<Date>(new Date())
     const rightDrawerOpen = ref<boolean>(false)
     const miniState = ref<boolean>(true)
@@ -24,6 +29,10 @@ export default {
         year: 'numeric',
       }
       return currentDate.value.toLocaleDateString(undefined, options)
+    })
+
+    onMounted(() => {
+      findScheduleFromUserAndMonth(currentDate.value.getMonth() + 1)
     })
 
     const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -103,6 +112,7 @@ export default {
       expanded,
       CALENDAR_CARD_ITEM_LIST,
       selectedItem,
+      memberUserSchedule,
     }
     const action = {
       previousMonth,
@@ -193,7 +203,8 @@ export default {
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
-      <!-- drawer content -->
+      내 일정
+      <div>{{ memberUserSchedule }}</div>
     </q-drawer>
 
     <q-page-container>
