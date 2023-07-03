@@ -247,6 +247,8 @@ export default {
                   <div v-else>
                     {{ date }}
                   </div>
+                  <q-list>dd</q-list>
+                  <q-card>dd</q-card>
                 </div>
               </div>
             </div>
