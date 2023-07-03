@@ -235,7 +235,13 @@ export default {
                 :class="{ today: isToday(date) }"
               >
                 <div @click="viewDateCalendar(currentMonth, date)">
-                  {{ date }}
+                  <div v-if="isToday(date)"></div>
+                  <q-avatar v-if="isToday(date)" size="24px" color="pink-12">{{
+                    date
+                  }}</q-avatar>
+                  <div v-else>
+                    {{ date }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -297,10 +303,10 @@ export default {
   text-align: center;
   background-color: #fff;
   border-radius: 5px;
+  height: 7rem;
 }
 
 .today {
-  background-color: #ff4081;
   color: #fff;
 }
 </style>
