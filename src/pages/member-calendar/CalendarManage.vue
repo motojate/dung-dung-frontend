@@ -232,17 +232,23 @@ export default {
                 v-for="(date, index) in calendarDates"
                 :key="index"
                 class="date"
-                :class="{ today: isToday(date) }"
               >
                 <div @click="viewDateCalendar(currentMonth, date)">
-                  <div v-if="isToday(date)"></div>
-                  <q-avatar v-if="isToday(date)" size="24px" color="pink-12">{{
-                    date
-                  }}</q-avatar>
+                  <div v-if="isToday(date)">
+                    <q-avatar
+                      v-if="isToday(date)"
+                      size="21px"
+                      text-color="white"
+                      font-size="small"
+                      color="pink-12"
+                      >{{ date }}</q-avatar
+                    >
+                  </div>
                   <div v-else>
                     {{ date }}
                   </div>
                 </div>
+                <q-card flat> dd </q-card>
               </div>
             </div>
           </div>
@@ -304,9 +310,5 @@ export default {
   background-color: #fff;
   border-radius: 5px;
   height: 7rem;
-}
-
-.today {
-  color: #fff;
 }
 </style>
