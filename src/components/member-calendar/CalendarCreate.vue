@@ -1,19 +1,39 @@
 <script lang="ts">
 import { useQuasar } from 'quasar'
-import { SignUpMemberUserInput } from 'src/common/model'
-import { useAuthStore } from 'src/stores/auth-store'
 import { defineComponent, ref } from 'vue'
+import { Form as ValidationForm, useForm, useField } from 'vee-validate'
+import * as yup from 'yup'
 
 export default defineComponent({
-  setup() {
+  components: { ValidationForm },
+  props: {
+    calenderId: Number,
+  },
+  setup(props) {
+    console.log(props.calenderId)
     const $q = useQuasar()
-    const store = useAuthStore()
-    const { signUpMemberUser } = store
-    const userId = ref<string>('')
-    const password = ref<string>('')
 
-    const state = { userId, password }
-    const action = {}
+    const validationSchema = yup.object({
+      title: yup.string().defined().required('제목은 필수 정보입니다.'),
+    })
+
+    const { errors, meta, setFieldError, resetForm } = useForm({
+      validationSchema,
+      initialValues: {
+        title: '',
+      },
+    })
+
+    const createSchedule = () => {
+      console.log(1)
+    }
+
+    const { value: title } = useField<string>('title', {
+      validateOnInput: true,
+    })
+
+    const state = { title, errors }
+    const action = { createSchedule }
     return {
       ...state,
       ...action,
@@ -30,18 +50,23 @@ export default defineComponent({
       </h2>
     </q-card-section>
 
-    <q-form @submit="memberSingUp">
+    <validation-form @submit="createSchedule">
       <q-card-section>
-        <q-input rounded outlined v-model="userId" label="아이디" type="text" />
-      </q-card-section>
-      <q-card-section>
+        <strong class="admin-input-label"
+          >아이디 <span class="essential">*</span></strong
+        >
         <q-input
-          rounded
+          square
           outlined
-          v-model="password"
-          label="비밀번호"
-          type="password"
-        />
+          v-model="title"
+          placeholder="회사 계정 입력"
+          class="text-input-area mx-0 w-100"
+          color="admin-gray1"
+          no-error-icon
+          :error="!!errors.title"
+        >
+          <template #error>{{ errors.title }} </template>
+        </q-input>
       </q-card-section>
 
       <q-card-section>
@@ -51,20 +76,10 @@ export default defineComponent({
           class="w-100"
           color="primary"
           type="submit"
-          label="가입하기"
+          label="생성하기"
         />
       </q-card-section>
-      <q-card-section> <q-separator inset /> </q-card-section>
-      <q-card-actions>
-        <div class="w-100">
-          <q-btn flat class="w-100" color="orange" label="닫기" v-close-popup />
-        </div>
-      </q-card-actions>
-
-      <!-- <q-card-section>
-              <q-btn rounded outline color="primary" label="회원가입" />
-            </q-card-section> -->
-    </q-form>
+    </validation-form>
   </q-card>
 </template>
 

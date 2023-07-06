@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
-import { FIND_SCHEDULE_FROM_USER_AND_MONTH } from 'src/graphql/member-schedule'
-import { useQuery } from 'villus'
+import {
+  CREATE_SCHEDULE_FROM_USER,
+  FIND_SCHEDULE_FROM_USER_AND_MONTH,
+} from 'src/graphql/member-schedule'
+import { useMutation, useQuery } from 'villus'
 import { ref } from 'vue'
 
 export const useMemberScheduleStore = defineStore('member-schedule', () => {
@@ -17,9 +20,14 @@ export const useMemberScheduleStore = defineStore('member-schedule', () => {
     memberUserSchedule.value = data?.value?.findByScheduleFromUserAndMonth
   }
 
+  const { execute: createScheduleFromUser } = useMutation(
+    CREATE_SCHEDULE_FROM_USER
+  )
+
   const state = { memberUserSchedule }
   const action = {
     findScheduleFromUserAndMonth,
+    createScheduleFromUser,
   }
 
   return { ...state, ...action }

@@ -102,6 +102,7 @@ export default {
     }
 
     const createNewSchedule = () => {
+      viewCreateDialog.value = true
       console.log(1)
     }
 
@@ -237,7 +238,6 @@ export default {
         glossy
         icon="add"
       />
-      <q-btn @click="createNewSchedule"></q-btn>
       <div
         class="draggable"
         draggable="true"
@@ -252,8 +252,6 @@ export default {
     </q-drawer>
 
     <q-page-container>
-      <q-btn @click="viewCreateDialog = true"></q-btn>
-
       <div class="q-pa-lg">
         <div class="q-gutter-md">
           <div class="calendar q-pa-md">
@@ -300,8 +298,8 @@ export default {
         </div>
       </div>
 
-      <q-dialog persistent v-model="viewCreateDialog">
-        <calendar-create
+      <q-dialog persistent v-model="viewCreateDialog" full-width>
+        <calendar-create :calender-id="7"
       /></q-dialog>
     </q-page-container>
   </q-layout>
