@@ -229,6 +229,14 @@ export default {
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+      <q-btn
+        class="float-right"
+        @click="createNewSchedule"
+        round
+        color="purple"
+        glossy
+        icon="add"
+      />
       <q-btn @click="createNewSchedule"></q-btn>
       <div
         class="draggable"
