@@ -53,14 +53,12 @@ export default defineComponent({
 
     <validation-form @submit="createSchedule">
       <q-card-section>
-        <strong class="admin-input-label"
-          >아이디 <span class="essential">*</span></strong
-        >
+        <strong class="important-input-label">일정 제목 </strong>
         <q-input
           square
           outlined
           v-model="title"
-          placeholder="회사 계정 입력"
+          placeholder="일정 제목 입력"
           class="text-input-area mx-0 w-100"
           color="admin-gray1"
           no-error-icon

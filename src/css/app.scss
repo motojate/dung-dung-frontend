@@ -10,3 +10,8 @@
 .w-50 {
   width: 50%;
 }
+
+.important-input-label::after {
+  content: '*'; /* * 문자를 추가 */
+  color: red; /* * 문자의 색상을 빨간색으로 설정 */
+}
