@@ -105,6 +105,23 @@ export default {
       console.log(1)
     }
 
+    const draggableElement = ref(null)
+
+    const onDragStart = (event) => {
+      // 드래그 시작 시 실행되는 로직
+      // 필요한 작업을 수행할 수 있습니다.
+    }
+
+    const onDrag = (event) => {
+      // 드래그 중에 실행되는 로직
+      // 필요한 작업을 수행할 수 있습니다.
+    }
+
+    const onDragEnd = (event) => {
+      // 드래그 종료 시 실행되는 로직
+      // 필요한 작업을 수행할 수 있습니다.
+    }
+
     const state = {
       currentMonth,
       days,
@@ -126,6 +143,11 @@ export default {
       toggleRightDrawer,
       drawerClick,
       viewDateCalendar,
+
+      draggableElement,
+      onDragStart,
+      onDrag,
+      onDragEnd,
     }
 
     return {
@@ -208,6 +230,15 @@ export default {
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
       <q-btn @click="createNewSchedule"></q-btn>
+      <div
+        class="draggable"
+        draggable="true"
+        @dragstart="onDragStart"
+        @drag="onDrag"
+        @dragend="onDragEnd"
+      >
+        드래그 가능한 요소
+      </div>
       내 일정
       <div>{{ memberUserSchedule }}</div>
     </q-drawer>
@@ -269,6 +300,11 @@ export default {
 </template>
 
 <style scoped>
+.draggable {
+  width: 200px;
+  height: 200px;
+  background-color: lightblue;
+}
 .calendar {
   width: 1600px;
   max-width: 100%;
