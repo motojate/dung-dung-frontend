@@ -15,6 +15,7 @@ export default defineComponent({
 
     const validationSchema = yup.object({
       title: yup.string().defined().required('제목은 필수 정보입니다.'),
+      month: yup.number().defined().required(''),
     })
 
     const { errors, meta, setFieldError, resetForm } = useForm({
