@@ -101,6 +101,10 @@ export default {
       return
     }
 
+    const createNewSchedule = () => {
+      console.log(1)
+    }
+
     const state = {
       currentMonth,
       days,
@@ -118,7 +122,7 @@ export default {
       previousMonth,
       nextMonth,
       isToday,
-
+      createNewSchedule,
       toggleRightDrawer,
       drawerClick,
       viewDateCalendar,
@@ -203,6 +207,7 @@ export default {
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+      <q-btn @click="createNewSchedule"></q-btn>
       내 일정
       <div>{{ memberUserSchedule }}</div>
     </q-drawer>
