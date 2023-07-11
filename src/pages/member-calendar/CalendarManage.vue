@@ -238,16 +238,8 @@ export default {
         glossy
         icon="add"
       />
-      <div
-        class="draggable"
-        draggable="true"
-        @dragstart="onDragStart"
-        @drag="onDrag"
-        @dragend="onDragEnd"
-      >
-        드래그 가능한 요소
-      </div>
-      내 일정
+      내정보
+
       <div>{{ memberUserSchedule }}</div>
     </q-drawer>
 
