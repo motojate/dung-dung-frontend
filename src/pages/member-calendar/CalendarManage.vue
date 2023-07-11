@@ -244,7 +244,9 @@ export default {
           </q-item-section>
         </q-item>
 
-        <img src="https://cdn.quasar.dev/img/parallax2.jpg" />
+        <q-card-section>
+          <q-avatar label="i" />
+        </q-card-section>
       </q-card>
       <q-btn
         class="float-right"
