@@ -230,6 +230,24 @@ export default {
     </q-drawer>
 
     <q-drawer show-if-above v-model="rightDrawerOpen" side="right" bordered>
+      <q-card class="my-card">
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img src="https://cdn.quasar.dev/img/avatar2.jpg" />
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>내 정보</q-item-label>
+            <q-item-label caption>로그인한 사용자 아이디</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-card-section>
+          <q-avatar label="i" />
+        </q-card-section>
+      </q-card>
       <q-btn
         class="float-right"
         @click="createNewSchedule"
@@ -238,16 +256,6 @@ export default {
         glossy
         icon="add"
       />
-      <div
-        class="draggable"
-        draggable="true"
-        @dragstart="onDragStart"
-        @drag="onDrag"
-        @dragend="onDragEnd"
-      >
-        드래그 가능한 요소
-      </div>
-      내 일정
       <div>{{ memberUserSchedule }}</div>
     </q-drawer>
 
