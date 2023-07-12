@@ -12,23 +12,3 @@ export interface CalendarCardItem {
   name: string
   icon: string
 }
-
-export interface test {
-  index: string
-}
-
-export interface test {
-  index: string
-}
-export interface test {
-  index: string
-}
-export interface test {
-  index: string
-}
-export interface test {
-  index: string
-}
-export interface test {
-  index: string
-}
