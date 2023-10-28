@@ -11,7 +11,7 @@ export const useMemberMarktetStore = defineStore('member-market', () => {
       },
       cachePolicy: 'network-only',
     })
-    return data?.value?.selectCharacter
+    return data?.value?.getMarkets
   }
   const state = {}
   const action = { findMarkets }
