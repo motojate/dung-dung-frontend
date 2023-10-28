@@ -15,6 +15,15 @@ export const useMemberUserStore = defineStore(
       return data?.value?.findAllMemberUser
     }
 
+    const findUniqueMemberUser = async (userId: string) => {
+      const { data } = await useQuery({
+        query: FIND_ALL_MEMBER_USER,
+        cachePolicy: 'network-only',
+      })
+
+      return data?.value?.findAllMemberUser
+    }
+
     const setToken = (loginToken: string) => {
       token.value = loginToken
     }
@@ -28,6 +37,7 @@ export const useMemberUserStore = defineStore(
       findAllMemberUser,
       setToken,
       resetToken,
+      findUniqueMemberUser,
     }
 
     return { ...state, ...action }
