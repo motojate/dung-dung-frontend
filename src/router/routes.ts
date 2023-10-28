@@ -20,6 +20,11 @@ const routes: RouteRecordRaw[] = [
         path: 'character-manage',
         component: () => import('pages/member-character/CharacterManage.vue'),
       },
+      {
+        name: 'MarketManage',
+        path: 'market-manage',
+        component: () => import('pages/member-market/MarketManage.vue'),
+      },
     ],
   },
   {

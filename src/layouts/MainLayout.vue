@@ -24,12 +24,12 @@ export default defineComponent({
       router.replace({ name: 'CalendarManage' })
     }
 
-    const toggleLeftDrawer = () => {
-      leftDrawerOpen.value = !leftDrawerOpen.value
+    const goMarketManage = () => {
+      router.replace({ name: 'MarketManage' })
     }
 
-    const test = () => {
-      console.log(1)
+    const toggleLeftDrawer = () => {
+      leftDrawerOpen.value = !leftDrawerOpen.value
     }
 
     const state = { leftDrawerOpen }
@@ -38,7 +38,7 @@ export default defineComponent({
       toggleLeftDrawer,
       goCharacterManage,
       goCalendarManage,
-      test,
+      goMarketManage,
     }
     return {
       ...state,
@@ -88,6 +88,14 @@ export default defineComponent({
           <q-item-section>내 일정 보기</q-item-section>
           <q-item-section side>Side</q-item-section>
         </q-item>
+        <q-item clickable v-ripple @click="goMarketManage">
+          <q-item-section avatar>
+            <q-icon name="monetization_on" />
+          </q-item-section>
+          <q-item-section>시장 보기</q-item-section>
+          <q-item-section side>Side</q-item-section>
+        </q-item>
+        <q-separator />
       </q-list>
     </q-drawer>
 
