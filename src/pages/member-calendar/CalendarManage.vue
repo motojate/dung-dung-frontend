@@ -103,7 +103,6 @@ export default {
 
     const createNewSchedule = () => {
       viewCreateDialog.value = true
-      console.log(1)
     }
 
     const draggableElement = ref(null)

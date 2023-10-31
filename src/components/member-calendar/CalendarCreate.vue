@@ -10,7 +10,6 @@ export default defineComponent({
     calenderId: Number,
   },
   setup(props) {
-    console.log(props.calenderId)
     const $q = useQuasar()
 
     const validationSchema = yup.object({

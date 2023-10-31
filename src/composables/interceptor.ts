@@ -1,23 +1,4 @@
-// import { storeToRefs } from 'pinia'
-// import { useMemberUserStore } from 'src/stores/member-user-store'
-
-// interface OperationContext {
-//   opContext: {
-//     headers: {
-//       Authorization?: string
-//     }
-//   }
-// }
-// export const authPlugin = ({ opContext }: OperationContext) => {
-//   console.log(opContext)
-//   const memberUserStore = useMemberUserStore()
-//   const { token } = storeToRefs(memberUserStore)
-//   if (token.value) {
-//     opContext.headers.Authorization = `Bearer ${token.value}`
-//   } else return
-// }
 import { useMemberUserStore } from '../stores/member-user-store'
-//const memberUserStore = useMemberUserStore()
 import { storeToRefs } from 'pinia'
 import { ClientPlugin, fetch, cache, dedup } from 'villus'
 
