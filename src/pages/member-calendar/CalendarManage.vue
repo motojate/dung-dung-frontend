@@ -107,21 +107,6 @@ export default {
 
     const draggableElement = ref(null)
 
-    // const onDragStart = (event) => {
-    //   // 드래그 시작 시 실행되는 로직
-    //   // 필요한 작업을 수행할 수 있습니다.
-    // }
-
-    // const onDrag = (event) => {
-    //   // 드래그 중에 실행되는 로직
-    //   // 필요한 작업을 수행할 수 있습니다.
-    // }
-
-    // const onDragEnd = (event) => {
-    //   // 드래그 종료 시 실행되는 로직
-    //   // 필요한 작업을 수행할 수 있습니다.
-    // }
-
     const state = {
       currentMonth,
       days,
@@ -145,9 +130,6 @@ export default {
       viewDateCalendar,
 
       draggableElement,
-      onDragStart,
-      onDrag,
-      onDragEnd,
     }
 
     return {
