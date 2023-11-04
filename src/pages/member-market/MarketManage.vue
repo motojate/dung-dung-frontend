@@ -1,4 +1,5 @@
 <script lang="ts">
+import { LocationType } from 'src/common/enum'
 import { useMemberMarktetStore } from 'src/stores/member-market-store'
 import { defineComponent, onMounted, ref } from 'vue'
 
@@ -6,11 +7,19 @@ export default defineComponent({
   setup() {
     const { findMarkets } = useMemberMarktetStore()
     const selectedOption = ref({ label: '전체', value: 'ALL' })
+    const selectedLocationOption = ref({ label: '선택', value: '' })
     const dropdownOptions = ref([
       { label: '전체', value: 'ALL' },
       { label: '서울', value: 'SEOUL' },
       { label: '경기', value: 'GYEONGGI' },
       { label: '인천', value: 'INCHEON' },
+    ])
+
+    const dropdownOfSeoulOption = ref([
+      ...Object.keys(LocationType).map((key) => ({
+        label: LocationType[key as keyof typeof LocationType],
+        value: key,
+      })),
     ])
     onMounted(async () => {
       rows.value = await findMarkets({
@@ -21,6 +30,9 @@ export default defineComponent({
       console.log(selectedOption.value)
       rows.value = await findMarkets({
         area: selectedOption.value.value,
+        location: selectedLocationOption.value.value
+          ? selectedLocationOption.value.value
+          : undefined,
       })
     }
     const rows = ref([])
@@ -41,7 +53,14 @@ export default defineComponent({
         field: 'nameAddress',
       },
     ]
-    const state = { rows, columns, selectedOption, dropdownOptions }
+    const state = {
+      rows,
+      columns,
+      selectedOption,
+      dropdownOptions,
+      selectedLocationOption,
+      dropdownOfSeoulOption,
+    }
     const action = { handleDataChange }
     return {
       ...state,
@@ -68,6 +87,16 @@ export default defineComponent({
         <q-select
           v-model="selectedOption"
           :options="dropdownOptions"
+          option-label="label"
+          option-value="value"
+          label="선택하세요"
+          filled
+          @update:model-value="handleDataChange"
+        />
+        <q-select
+          v-if="selectedOption.value === 'SEOUL'"
+          v-model="selectedLocationOption"
+          :options="dropdownOfSeoulOption"
           option-label="label"
           option-value="value"
           label="선택하세요"

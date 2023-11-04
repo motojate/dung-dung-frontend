@@ -3,7 +3,7 @@ import { GET_MARKETS } from 'src/graphql/market'
 import { useQuery } from 'villus'
 
 export const useMemberMarktetStore = defineStore('member-market', () => {
-  const findMarkets = async (dto: { area: string }) => {
+  const findMarkets = async (dto: { area: string; location?: string }) => {
     const { data } = await useQuery({
       query: GET_MARKETS,
       variables: {
