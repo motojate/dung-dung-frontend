@@ -1,26 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
+import RouterConfig from './routes';
 import './App.css';
+import useAppSelector from './hooks/useAppSelector';
+import { CircularProgress } from '@mui/material';
 
-function App() {
+const App = () => {
+  const isLoading = useAppSelector(state => state.loadingReducer.isLoading);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <RouterConfig />
+    </>
   );
-}
+};
 
 export default App;
