@@ -5,7 +5,7 @@ import { FC } from 'react';
 const MainHeader: FC = () => {
   const title = 'TODO';
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Toolbar variant="dense">
         <IconButton
           edge="start"
