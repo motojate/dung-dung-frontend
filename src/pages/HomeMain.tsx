@@ -29,6 +29,7 @@ const HomeMain = () => {
         calendarType="gregory"
         showNeighboringMonth={false}
         tileClassName={titleClassName}
+        formatDay={(locale, date) => date.getDate().toString()}
       />
       {/* <MyAnimalCard />
       <TodayTodoCard /> */}
