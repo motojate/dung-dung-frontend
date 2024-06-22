@@ -1,6 +1,6 @@
 import React from 'react';
 import RouterConfig from './routes';
-import './App.css';
+import 'src/styles/main.css';
 import useAppSelector from './hooks/useAppSelector';
 
 const App = () => {

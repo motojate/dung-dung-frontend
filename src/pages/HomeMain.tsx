@@ -4,8 +4,8 @@ import TodayTodoCard from 'src/components/cards/TodayTodoCard';
 import 'react-calendar/dist/Calendar.css';
 import Calendar from 'react-calendar';
 import { useState } from 'react';
-import { TileArgs, Value } from 'react-calendar/dist/cjs/shared/types';
-import styles from 'src/modules/Calendar.module.css';
+import { Value } from 'react-calendar/dist/cjs/shared/types';
+import moment from 'moment';
 
 const HomeMain = () => {
   const [value, setValue] = useState<Date>(new Date());
@@ -14,22 +14,18 @@ const HomeMain = () => {
     if (value instanceof Date) setValue(value);
   };
 
-  const titleClassName = ({ date, view }: TileArgs) => {
-    if (view === 'month') {
-      if (date.getDay() === 0) return styles.sundayHeader;
-      if (date.getDay() === 6) return styles.saturdayBody;
-    }
-  };
-
   return (
     <>
       <Calendar
         onChange={onChange}
         value={value}
-        calendarType="gregory"
+        next2Label={null}
+        prev2Label={null}
+        formatDay={(locale, date) => moment(date).format('D')}
+        formatYear={(locale, date) => moment(date).format('YYYY')}
+        formatMonthYear={(locale, date) => moment(date).format('YYYY. MM')}
         showNeighboringMonth={false}
-        tileClassName={titleClassName}
-        formatDay={(locale, date) => date.getDate().toString()}
+        calendarType="gregory"
       />
       {/* <MyAnimalCard />
       <TodayTodoCard /> */}
