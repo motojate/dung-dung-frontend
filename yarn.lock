@@ -1459,6 +1459,11 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.2.tgz#d8bae93ac8b815b2bd7a98078cf91e2724ef11e5"
   integrity sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==
 
+"@hookform/resolvers@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@hookform/resolvers/-/resolvers-3.6.0.tgz#71ae08acf7f7624fb24ea0505de00b9001a63687"
+  integrity sha512-UBcpyOX3+RR+dNnqBd0lchXpoL8p4xC21XP8H6Meb8uve5Br1GCnmg0PcBoKKqPKgGu9GHQ/oygcmPrQhetwqw==
+
 "@humanwhocodes/config-array@^0.11.14":
   version "0.11.14"
   resolved "https://registry.yarnpkg.com/@humanwhocodes/config-array/-/config-array-0.11.14.tgz#d78e481a039f7566ecc9660b4ea7fe6b1fec442b"
@@ -8546,10 +8551,10 @@ react-error-overlay@^6.0.11:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.11.tgz#92835de5841c5cf08ba00ddd2d677b6d17ff9adb"
   integrity sha512-/6UZ2qgEyH2aqzYZgQPxEnz33NJ2gNsnHA2o5+o4wW9bLM/JYQitNP9xPhsXwC08hMMovfGe/8retsdDsczPRg==
 
-react-hook-form@^7.51.4:
-  version "7.51.4"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.4.tgz#c3a47aeb22b699c45de9fc12b58763606cb52f0c"
-  integrity sha512-V14i8SEkh+V1gs6YtD0hdHYnoL4tp/HX/A45wWQN15CYr9bFRmmRdYStSO5L65lCCZRF+kYiSKhm9alqbcdiVA==
+react-hook-form@^7.52.0:
+  version "7.52.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.52.0.tgz#e52b33043e283719586b9dd80f6d51b68dd3999c"
+  integrity sha512-mJX506Xc6mirzLsmXUJyqlAI3Kj9Ph2RhplYhUVffeOQSnubK2uVqBFOBJmvKikvbFV91pxVXmDiR+QMF19x6A==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"

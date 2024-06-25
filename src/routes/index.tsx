@@ -3,6 +3,9 @@ import AuthMain from '../pages/auth/AuthMain';
 import LoginForm from 'src/components/forms/LoginForm';
 import MainLayout from 'src/components/layouts/MainLayout';
 import HomeMain from 'src/pages/HomeMain';
+import QuestionMain from 'src/pages/question/QuestionMain';
+import QuestionCreationPage from 'src/pages/question/QuestionCreationPage';
+import QuestionCreateForm from 'src/components/forms/question/QuestionCreateForm';
 
 const RouterConfig = () => {
   const router = createBrowserRouter([
@@ -13,6 +16,16 @@ const RouterConfig = () => {
         {
           path: '',
           element: <HomeMain />,
+        },
+        {
+          path: 'question',
+          element: <QuestionMain />,
+          children: [
+            {
+              path: 'create',
+              element: <QuestionCreateForm />,
+            },
+          ],
         },
       ],
     },
