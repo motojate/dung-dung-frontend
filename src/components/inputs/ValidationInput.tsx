@@ -1,5 +1,5 @@
 import { TextField, TextFieldProps } from '@mui/material';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface IValidationInput
@@ -16,18 +16,17 @@ const ValidationInput: React.FC<IValidationInput> = ({
     formState: { errors },
   } = useFormContext();
 
-  const error = errors[name];
   return (
     <Controller
       name={name}
       control={control}
       defaultValue=""
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           {...field}
           {...textFieldProps}
           error={!!error}
-          helperText={error?.message?.toString() ?? ''}
+          helperText={error ? error.message : ''}
         />
       )}
     />

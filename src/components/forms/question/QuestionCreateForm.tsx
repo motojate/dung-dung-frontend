@@ -1,13 +1,29 @@
-import { Box, Button, Divider } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 import { FC } from 'react';
 import * as yup from 'yup';
-import { FormProvider, useFieldArray, useForm } from 'react-hook-form';
+import {
+  FormProvider,
+  useFieldArray,
+  useForm,
+  Controller,
+} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ValidationInput from 'src/components/inputs/ValidationInput';
+import { generateLabel } from 'src/utils/data-generate.util';
+import questionApi from 'src/apis/question';
+import { useOutletContext } from 'react-router-dom';
 
-interface IQuestionCreateFormInput {
+export interface IQuestionCreateFormInput {
   text: string;
   options: { text: string }[];
+  answer: string;
 }
 
 const schema: yup.ObjectSchema<IQuestionCreateFormInput> = yup.object().shape({
@@ -20,14 +36,20 @@ const schema: yup.ObjectSchema<IQuestionCreateFormInput> = yup.object().shape({
       })
     )
     .required(),
+  answer: yup.string().required('정답은 필수 입력 값입니다.'),
 });
 
 const QuestionCreateForm: FC = () => {
+  const { categoryCode } = useOutletContext<{
+    categoryCode: { label: string; value: string };
+  }>();
+
   const methods = useForm<IQuestionCreateFormInput>({
     resolver: yupResolver(schema),
     defaultValues: {
       text: '',
       options: [{ text: '' }],
+      answer: 'a',
     },
   });
 
@@ -36,8 +58,9 @@ const QuestionCreateForm: FC = () => {
     name: 'options',
   });
 
-  const onSubmit = (data: IQuestionCreateFormInput) => {
-    console.log(data);
+  const onSubmit = async (data: IQuestionCreateFormInput) => {
+    const dto = { ...data, categoryCode: categoryCode.value };
+    await questionApi.createQuestion(dto);
   };
 
   const onError = (error: any, e: any) => {
@@ -85,34 +108,52 @@ const QuestionCreateForm: FC = () => {
               보기 추가
             </Button>
           </Box>
-          {fields.map((field, index) => (
-            <Box
-              key={field.id}
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between', // 간격을 균등하게 설정
-                alignItems: 'center', // 세로 축 중앙 정렬
-                marginBottom: 1, // 각 요소 사이의 마진 추가
-              }}
-            >
-              <ValidationInput
-                name={`options.${index}.text`}
-                label={String.fromCharCode(97 + index)}
-                multiline
-                fullWidth
-              />
-              <Button
-                size="small"
-                variant="text"
-                color="error"
-                sx={{ marginLeft: 2 }} // 버튼과 입력 필드 사이의 간격
-                onClick={() => remove(index)}
-                disabled={fields.length <= 1}
-              >
-                삭제
-              </Button>
-            </Box>
-          ))}
+          <Controller
+            name="answer"
+            control={methods.control}
+            render={({ field: radioField }) => (
+              <RadioGroup {...radioField}>
+                {fields.map((field, index) => (
+                  <Box
+                    key={field.id}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: 1,
+                    }}
+                  >
+                    <FormControlLabel
+                      control={
+                        <Radio
+                          checked={radioField.value === generateLabel(index)}
+                          value={generateLabel(index)}
+                        />
+                      }
+                      label=""
+                    />
+                    <ValidationInput
+                      name={`options.${index}.text`}
+                      label={generateLabel(index)}
+                      multiline
+                      fullWidth
+                    />
+                    <Button
+                      size="small"
+                      variant="text"
+                      color="error"
+                      sx={{ marginLeft: 2 }} // 버튼과 입력 필드 사이의 간격
+                      onClick={() => remove(index)}
+                      disabled={fields.length <= 1}
+                    >
+                      삭제
+                    </Button>
+                  </Box>
+                ))}
+              </RadioGroup>
+            )}
+          />
+
           <Button
             fullWidth
             variant="contained"
