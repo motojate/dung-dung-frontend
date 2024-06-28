@@ -6,6 +6,7 @@ import HomeMain from 'src/pages/HomeMain';
 import QuestionMain from 'src/pages/question/QuestionMain';
 import QuestionCreationPage from 'src/pages/question/QuestionCreationPage';
 import QuestionCreateForm from 'src/components/forms/question/QuestionCreateForm';
+import TodayQuestionForm from 'src/components/forms/question/TodayQuestionForm';
 
 const RouterConfig = () => {
   const router = createBrowserRouter([
@@ -24,6 +25,10 @@ const RouterConfig = () => {
             {
               path: 'create',
               element: <QuestionCreateForm />,
+            },
+            {
+              path: 'view',
+              element: <TodayQuestionForm />,
             },
           ],
         },
