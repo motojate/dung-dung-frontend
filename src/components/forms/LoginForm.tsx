@@ -1,7 +1,7 @@
 import { Typography, TextField, FormHelperText, Button } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from 'react-query';
+import { useMutation } from '@tanstack/react-query';
 import authApi from 'src/apis/auth';
 import { AuthErrorCodeType } from 'src/types';
 import { AUTH_ERROR_CODE_MAPPING } from 'src/constants/errorCodes';
@@ -11,20 +11,17 @@ const LoginForm = () => {
   const [userId, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const { mutate, isLoading, isError, error } = useMutation(
-    () => authApi.login({ userId, password, authProvider: 'LOCAL' }),
-    {
-      onSuccess: _ => navigate('/', { replace: true }),
-      onError: (e: any) => {
-        const errorCode: AuthErrorCodeType = e.response.data.code ?? 5000;
-        e.message = AUTH_ERROR_CODE_MAPPING[errorCode];
-      },
-    }
-  );
+  const { login } = authApi;
+
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationFn: login,
+    onSuccess: _ => navigate('/', { replace: true }),
+    onError: e => console.error(e),
+  });
 
   const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    mutate();
+    mutate({ userId, password, authProvider: 'LOCAL' });
   };
   return (
     <>

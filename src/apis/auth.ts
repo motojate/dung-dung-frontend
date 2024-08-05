@@ -24,16 +24,24 @@ const socialLogin = async (dto: SocialLoginDto) => {
   }
 };
 
-const login = async (dto: LocalLoginDto): Promise<void> => {
-  const data = {
-    userId: dto.userId,
-    password: dto.password,
-    siteType: DEFAULT_WEB_SITE_TYPE,
-    loginProvider: dto.authProvider,
-  };
-  await axiosInstanceObj.authAxiosInstance.post('/auth/login', data, {
-    withCredentials: true,
-  });
+const login = async (dto: LocalLoginDto) => {
+  try {
+    const { userId, password, authProvider } = dto;
+    const data = {
+      userId,
+      password,
+      siteType: DEFAULT_WEB_SITE_TYPE,
+      loginProvider: authProvider,
+    };
+    await axiosInstanceObj.authAxiosInstance.post('/auth/login', data, {
+      withCredentials: true,
+    });
+
+    return userId;
+  } catch (e: any) {
+    const errorCode: AuthErrorCodeType = e.response?.data?.code ?? 5000;
+    throw errorCode;
+  }
 };
 
 const checkCookie = async () => {
