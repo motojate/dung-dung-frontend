@@ -7,6 +7,7 @@ import QuestionMain from 'src/pages/question/QuestionMain';
 import QuestionCreationPage from 'src/pages/question/QuestionCreationPage';
 import QuestionCreateForm from 'src/components/forms/question/QuestionCreateForm';
 import TodayQuestionForm from 'src/components/forms/question/TodayQuestionForm';
+import JobApplicationMain from 'src/pages/job-application/JobApplicationMain';
 
 const RouterConfig = () => {
   const router = createBrowserRouter([
@@ -31,6 +32,10 @@ const RouterConfig = () => {
               element: <TodayQuestionForm />,
             },
           ],
+        },
+        {
+          path: 'job-application',
+          element: <JobApplicationMain />,
         },
       ],
     },

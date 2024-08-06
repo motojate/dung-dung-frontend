@@ -1,7 +1,7 @@
 import { IQuestionCreateFormInput } from 'src/components/forms/question/QuestionCreateForm';
 import axiosInstanceObj from '.';
 import { generateLabel } from 'src/utils/data-generate.util';
-import { QueryFunctionContext } from 'react-query';
+import { QueryFunctionContext } from '@tanstack/react-query';
 
 const { serviceAxiosInstance } = axiosInstanceObj;
 
